@@ -7,7 +7,7 @@
     Author: Dylan Irzi
     Donate Link: 
     License: GPL    
-    Version: 0.1 Beta
+    Version: 1.0
     Author URI: https://www.websecuritydev.com
     Text Domain: WebSecurityDev
     Domain Path: languages/
@@ -38,17 +38,18 @@ function meta_twitter_card_shop(){
     $title = get_the_title() ." &lsaquo; ". get_bloginfo( "name", "display" );
 	$options = get_option( 'cards_options' );
 	$value = $options['twitter_username'];
-    $src = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), array( 90,55 ), false, "" ); 
+    	$src = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), array( 90,55 ), false, "" ); 
 
-    $face_metad = get_post_meta(get_the_ID(), "metadescription", true);
+    	$face_metad = get_post_meta(get_the_ID(), "metadescription", true);
 
-    $twitter_metad = get_post_meta(get_the_ID(), "metadescription140", true);
+   	$twitter_metad = get_post_meta(get_the_ID(), "_excerpt", true);
 	
 	$prices = get_post_meta($postid, '_price', true); 
-	
+	$descriptionstw = get_post_meta(get_the_ID(), '_description', true); 
 	$domain = get_site_url();
 	$domain_filter = str_replace("http://", "", $domain);
-	
+
+
     if (empty($twitter_metad)) 
         $twitter_metad = $face_metad;
 
@@ -62,11 +63,11 @@ function meta_twitter_card_shop(){
 	<meta name="twitter:title" content="<?php echo esc_attr($title); ?>" />
 	<meta name="twitter:image" content="<?php echo esc_attr($src[0]); ?>" />
 	<meta name="twitter:label1" content="Precio">
-	<meta name="twitter:data1" content="<?php echo $prices; ?>">
+	<meta name="twitter:data1" content="<?php echo '$ '.$prices; ?>">
 	<meta name="twitter:label2" content="Marca">
 	<meta name="twitter:data2" content="<?php echo esc_attr($title); ?>">
 	<meta name="twitter:url" content="<?php the_permalink(); ?>" />
-	<meta name="twitter:description" content="<?php if (!empty($twitter_metad)) echo esc_attr($twitter_metad); else the_excerpt(); ?>" />
+	<meta name="twitter:description" content="<?php if (!empty($twitter_metad)) echo htmlentities(esc_attr($twitter_metad)); else the_excerpt(); ?>" />
 	<!-- Twitter Cards Shops -->
     <?php 
 }
